@@ -120,3 +120,117 @@ tahapan preprocessing yang selanjutnya adalah melakukan pembersihan nilai *missi
 |        |            |                |                 |                     |           |                                                   |                                                   |                                                   |
 
 tahapan selanjutnya adalah melakukan pengecekan statistik pada books dataframe yang mana dapat kita lihat judul buku yang paling populer adalah Selected Poem
+
+## melakukan pengecekan data duplikat
+tahapan selanjutnya adalah melakukan pengecekan terhadap data yang duplikat pada books dan rating dataframe
+
+# Model Development Popularity Based recomendation system
+
+tahapan pertama dalam membentuk model *Popularity Based recomendation system* adalah melakukan *merging* antara books dan ratings dataframe
+
+|   |       ISBN |          Book-Title |          Book-Author | Year-Of-Publication |               Publisher |                                       Image-URL-S |                                       Image-URL-M |                                       Image-URL-L | User-ID | Book-Rating |
+|--:|-----------:|--------------------:|---------------------:|--------------------:|------------------------:|--------------------------------------------------:|--------------------------------------------------:|--------------------------------------------------:|--------:|------------:|
+| 0 | 0195153448 | Classical Mythology |   Mark P. O. Morford |                2002 | Oxford University Press | http://images.amazon.com/images/P/0195153448.0... | http://images.amazon.com/images/P/0195153448.0... | http://images.amazon.com/images/P/0195153448.0... |       2 |           0 |
+| 1 | 0002005018 |        Clara Callan | Richard Bruce Wright |                2001 |   HarperFlamingo Canada | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... |       8 |           5 |
+| 2 | 0002005018 |        Clara Callan | Richard Bruce Wright |                2001 |   HarperFlamingo Canada | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... |   11400 |           0 |
+| 3 | 0002005018 |        Clara Callan | Richard Bruce Wright |                2001 |   HarperFlamingo Canada | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... |   11676 |           8 |
+| 4 | 0002005018 |        Clara Callan | Richard Bruce Wright |                2001 |   HarperFlamingo Canada | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... | http://images.amazon.com/images/P/0002005018.0... |   41385 |           0 |
+
+
+tahapan selanjutnya adalah melakukan pengecekan jumlah kolom dan baris pada dataframe baru yang merupakan gabungan dari dataframe book dan rating yang dimana pada dataframe gabungan ini terdisi dari 1031129 baris dan 10 kolom
+
+## membuat dataframe berdasarkan pengelompokan judul buku dan menghitung jumlah nilai rating keseluruhan
+tahapan selanjutnya adalah membuat dataframe baru yang memuat judul buku dan nilai jumlah keseluruhan rating dengan melakukan pengelompokan berdasarkan kritera book title kemudian melakukan reset index dengan melakukan drop kolom pada df_new selain kolom Book_title dan Book-Rating
+|                                       Book-Title | Counted-Rating |
+|-------------------------------------------------:|---------------:|
+| A Light in the Storm: The Civil War Diary of ... |              4 |
+|                            Always Have Popsicles |              1 |
+|             Apple Magic (The Collector's series) |              1 |
+| Ask Lily (Young Women of Faith: Lily Series, ... |              1 |
+| Beyond IBM: Leadership Marketing and Finance ... |              1 |
+
+## melakukan pengecekan statistik
+|       | Counted-Rating |
+|------:|----------------|
+| count |  241066.000000 |
+|  mean |       4.277372 |
+|  std  |      16.738847 |
+|  min  |       1.000000 |
+|  25%  |       1.000000 |
+|  50%  |       1.000000 |
+|  75%  |       3.000000 |
+|  max  |    2502.000000 |
+
+dapat dilihat setelah dilakukan pengecekan statistik bahwa jumlah nilai rating terbanyak ada pada angka 2502,kemudian pada tahapan selanjutnya kita akan melakukan pengecekan judul buku apa yang memiliki rating terbanyak
+
+## pengecekan judul buku dengan jumlah pemberian rating terbesar 
+
+|                Book-Title | Counted-Rating |
+|--------------------------:|----------------|
+|               Wild Animus |           2502 |
+| The Lovely Bones: A Novel |           1295 |
+|         The Da Vinci Code |            898 |
+
+dapat dilihat buku dengan judul Wild Animus memiliki jumlah penilaian terbesar yaitu 2502
+
+## Membuat dataframe dengan nilai rating rata rata
+proses selanjutnya adalah membuat dataframe baru yang terdiri dari judul buku dan nilai rata rata rating
+
+|                                       Book-Title | Average-Rating |
+|-------------------------------------------------:|----------------|
+| A Light in the Storm: The Civil War Diary of ... |           2.25 |
+|                            Always Have Popsicles |           0.00 |
+|             Apple Magic (The Collector's series) |           0.00 |
+| Ask Lily (Young Women of Faith: Lily Series, ... |           8.00 |
+| Beyond IBM: Leadership Marketing and Finance ... |           0.00 |
+
+## penggabungan dataframe antara counted rating dan average rating
+tahapan selanjutnya yaitu melakukan penggabungan dataframe counted rating dan average rating berdasarkan Book-Title kemudian mengurutkan nilai dengan besaran nilai pada Counted-Rating
+
+|                 Book-Title | Counted-Rating | Average-Rating |
+|---------------------------:|---------------:|----------------|
+|                Wild Animus |           2502 |       1.019584 |
+|  The Lovely Bones: A Novel |           1295 |       4.468726 |
+|          The Da Vinci Code |            898 |       4.642539 |
+|            A Painted House |            838 |       3.231504 |
+| The Nanny Diaries: A Novel |            828 |       3.530193 |
+
+## Membuat popular dataframe
+proses berikutnya yaitu membuat dataframe popular_books dengan menggabungkan data pada dataframe book_sorted yang memiliki nilai Counted-Rating lebih dari 500 lalu mengurutkannya berdasarkan nilai Average-Rating 
+|                                        Book-Title | Counted-Rating | Average-Rating |
+|--------------------------------------------------:|---------------:|----------------|
+|  Harry Potter and the Chamber of Secrets (Book 2) |            556 |       5.183453 |
+| Harry Potter and the Sorcerer's Stone (Harry P... |            575 |       4.895652 |
+|                             To Kill a Mockingbird |            510 |       4.700000 |
+|                                 The Da Vinci Code |            898 |       4.642539 |
+|                         The Lovely Bones: A Novel |           1295 |       4.468726 |
+|                           The Secret Life of Bees |            774 |       4.447028 |
+|               The Red Tent (Bestselling Backlist) |            723 |       4.334716 |
+|                         Girl with a Pearl Earring |            526 |       4.218631 |
+| Where the Heart Is (Oprah's Book Club (Paperba... |            585 |       4.105983 |
+|                                        Life of Pi |            664 |       4.088855 |
+
+# Top-N Recomednation
+berikutnya adalah mendapatkan rekomendasi 10 buku terpopuler berdasarkan nilai rata rata ratings yang diberikan pengguna dengan hasil sebagai berikut:
+
+| Book-Title                                        |
+|---------------------------------------------------|
+|  Harry Potter and the Chamber of Secrets (Book 2) |
+| Harry Potter and the Sorcerer's Stone (Harry P... |
+|                             To Kill a Mockingbird |
+|                                 The Da Vinci Code |
+|                         The Lovely Bones: A Novel |
+|                           The Secret Life of Bees |
+|               The Red Tent (Bestselling Backlist) |
+|                         Girl with a Pearl Earring |
+| Where the Heart Is (Oprah's Book Club (Paperba... |
+|                                        Life of Pi |
+
+# Evaluation
+
+![download (5)](https://user-images.githubusercontent.com/79986070/225234648-a9d38923-5da5-4ece-8b2f-edc98eb6d1a9.png)
+berikutnya adalah evaluasi berdasarkan hasil plotting dari hasil perhitungan nilai rata rata rating yang diberikan pengguna terhadap seluruh judul buku memberikan hasil bahwa buku dengan judul Harry Potter and the Chamber of Secrets (Book 2) merupakan buku terpopuler dengan nilai rating rata rata sebesar  5.183453
+
+#References
+[1] M. Prasrihamni, Zulela, and Edwita, “OPTIMALISASI PENERAPAN KEGIATAN LITERASI DALAM MENINGKATKAN MINAT BACA SISWA SEKOLAH DASAR Mega,” J. Cakrawala Pendas, vol. 8, no. 1, pp. 128–134, 2022.
+
