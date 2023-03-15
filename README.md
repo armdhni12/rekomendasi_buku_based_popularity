@@ -254,7 +254,7 @@ berikutnya adalah mendapatkan rekomendasi 10 buku terpopuler berdasarkan nilai r
 
 # Evaluation
 
-berikutnya adalah evaluasi berdasarkan pembentukan sistem rekomendasi menggunakan *Content Based Filtering System* dapat memberikan rekomendasi judul buku terpopuler melalui  plotting dari hasil perhitungan perbandingan nilai rata rata rating yang diberikan pengguna terhadap seluruh judul buku memberikan hasil bahwa buku dengan judul Harry Potter and the Chamber of Secrets (Book 2) merupakan buku terpopuler dengan nilai rating rata rata sebesar  5.183453
+berikutnya adalah evaluasi berdasarkan pembentukan sistem rekomendasi menggunakan *Popularity Based Filtering* dapat memberikan rekomendasi judul buku terpopuler melalui  plotting dari hasil perhitungan perbandingan nilai rata rata rating yang diberikan pengguna terhadap seluruh judul buku memberikan hasil bahwa buku dengan judul Harry Potter and the Chamber of Secrets (Book 2) merupakan buku terpopuler dengan nilai rating rata rata sebesar  5.183453
 
 #References
 [1] M. Prasrihamni, Zulela, and Edwita, “OPTIMALISASI PENERAPAN KEGIATAN LITERASI DALAM MENINGKATKAN MINAT BACA SISWA SEKOLAH DASAR Mega,” J. Cakrawala Pendas, vol. 8, no. 1, pp. 128–134, 2022.
